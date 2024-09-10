@@ -24,7 +24,7 @@ const CompanyPage = (props: Props) => {
   return (
     <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden">
         <Sidebar></Sidebar>
-        <CompanyDash>
+        <CompanyDash ticker={ticker!}>
           {company ? (
             <Tile title="Company Title" subtitle={company.companyName} />
           ) : (

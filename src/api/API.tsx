@@ -1,4 +1,4 @@
-import { CompanyProfile, CompanySearch } from "./company";
+import { CompanyKeyMetrics, CompanyProfile, CompanySearch } from "./company";
 import axios from "axios";
 
 interface SearchResponse {
@@ -19,6 +19,17 @@ export const searchCompanies = async(query: string) => {
 export const getCompanyProfile = async(query: string) => {
     try{
         const data = await axios.get<CompanyProfile[]>(`https://financialmodelingprep.com/api/v3/profile/${query}?apikey=${import.meta.env.VITE_API_KEY}`)
+        return data
+    }
+    catch(error){
+        console.log(error)
+        return error
+    }
+}
+
+export const getKeyMetrics = async(query: string) => {
+    try{
+        const data = await axios.get<CompanyKeyMetrics[]>(`https://financialmodelingprep.com/api/v3/key-metrics-ttm/${query}?apikey=${import.meta.env.VITE_API_KEY}`)
         return data
     }
     catch(error){
