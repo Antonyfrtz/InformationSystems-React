@@ -1,21 +1,29 @@
 import React from 'react'
 import './card.css'
+import { CompanySearch } from '../../api/company';
+import Add from '../portfolio/add/Add';
 
 interface Props {
-    title: string,
-    description: string,
-    footer: string
+    id: string,
+    searchResult: CompanySearch,
+    onPortfolioCreate: (e: React.SyntheticEvent) => void
 }
 
-const Card: React.FC<Props> = ({title,description,footer}: Props) : JSX.Element => {
+const Card: React.FC<Props> = ({id, searchResult, onPortfolioCreate}: Props) : JSX.Element => {
   return (
-    <div className='card'>
-        <img src='https://lh3.googleusercontent.com/p/AF1QipMCs57SgmQDG1K0YkYt_ZzczSiEZie-qRpitxpV=s680-w680-h510'></img>
-        <div className='card-info'>
-            <h2>{title}</h2>
-            <p>{description}</p>
-        </div>
-        <p className='card-footer'>{footer}</p>
+    <div
+      className="flex flex-col items-center justify-between w-full p-6 bg-slate-100 rounded-lg md:flex-row"
+      key={id}
+      id={id}
+    >
+      <h2 className="font-bold text-center text-veryDarkViolet md:text-left">
+        {searchResult.name} ({searchResult.symbol})
+      </h2>
+      <p className="text-black">{searchResult.currency}</p>
+      <p className="font-bold text-black">
+        {searchResult.exchangeShortName} - {searchResult.stockExchange}
+      </p>
+      <Add onPortfolioCreate={onPortfolioCreate} symbol={searchResult.symbol}/>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import child_process from 'child_process';
 import { env } from 'process';
+import tailwindcss from 'tailwindcss'
 
 const baseFolder =
     env.APPDATA !== undefined && env.APPDATA !== ''
@@ -40,6 +41,11 @@ export default defineConfig({
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
+    },
+    css: {
+        postcss: {
+          plugins: [tailwindcss()],
+        },
     },
     server: {
         proxy: {
