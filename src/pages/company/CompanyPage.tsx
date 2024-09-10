@@ -2,6 +2,9 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { CompanyProfile } from '../../api/company'
 import { getCompanyProfile } from '../../api/API'
+import Sidebar from '../../components/sidebar/Sidebar'
+import CompanyDash from '../../components/company/CompanyDash'
+import Tile from '../../components/tile/Tile'
 
 interface Props {}
 
@@ -13,13 +16,22 @@ const CompanyPage = (props: Props) => {
   useEffect(() => {
     const getProfileInit = async () => {
       const result = await getCompanyProfile(ticker!) as any;
-      setCompany(result.data[0])
+      setCompany(result?.data[0])
     }
     getProfileInit()
   },[])
 
   return (
-    <>{company ? (<div>{company.companyName}</div>):(<div>Company not found!</div>)}</>
+    <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden">
+        <Sidebar></Sidebar>
+        <CompanyDash>
+          {company ? (
+            <Tile title="Company Title" subtitle={company.companyName} />
+          ) : (
+            <Tile title="Loading..." subtitle="" />
+          )}
+        </CompanyDash>
+        </div>
   )
 }
 
