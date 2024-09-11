@@ -29,7 +29,7 @@ const CompanyPage = (props: Props) => {
           {company ? (
             <>
               <Tile title="Company Title" subtitle={company.companyName} />
-              <Tile title="Price" subtitle={company.price.toString()} />
+              <Tile title="Price" subtitle={"$"+company.price.toString()} />
               <Tile title="Sector" subtitle={company.sector} />
               <Tile title="CEO" subtitle={company.ceo} />
               <p className='bg-white shadow rounded text-medium text-gray-900 p-3 mt-1 m-4'>{company.description}</p>
