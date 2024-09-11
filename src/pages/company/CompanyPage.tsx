@@ -5,6 +5,7 @@ import { getCompanyProfile } from '../../api/API'
 import Sidebar from '../../components/sidebar/Sidebar'
 import CompanyDash from '../../components/company/CompanyDash'
 import Tile from '../../components/tile/Tile'
+import Spinner from '../../components/spinner/Spinner'
 
 interface Props {}
 
@@ -34,7 +35,7 @@ const CompanyPage = (props: Props) => {
               <p className='bg-white shadow rounded text-medium text-gray-900 p-3 mt-1 m-4'>{company.description}</p>
             </>
           ) : (
-            <Tile title="Loading..." subtitle="" />
+            <Spinner></Spinner>
           )}
         </CompanyDash>
         </div>
