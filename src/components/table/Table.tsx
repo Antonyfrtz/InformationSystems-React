@@ -1,37 +1,24 @@
 import React from 'react'
-import { testIncomeStatementData } from './testData'
 
-const data = testIncomeStatementData
+type Props = {
+    data: any
+    config: any
+}
 
-type Props = {}
-
-type Company = (typeof data)[0] // Company is the type of the first element in the data array
-
-const configs = [
-    {
-        label: 'Year',
-        render: (company: Company) => company.acceptedDate
-    },
-    {
-        label: "Cost of Revenue",
-        render: (company: Company) => company.costOfRevenue
-    }
-]
-
-const Table = (props: Props) => {
-    const renderedRows = data.map((company) => {
+const Table = ({data, config}: Props) => {
+    const renderedRows = data.map((company: any) => {
         return (
             <tr key={company.cik}>
-                {configs.map((config) => {
+                {config.map((val: any) => {
                     return (
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">{config.render(company)}</td>
+                        <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">{val.render(company)}</td>
                     )
                 })}
             </tr>
         )
     })
-    const renderedHeaders = configs.map((config) => {
-        return ( <th key={config.label} className='p-4 text-left text-xs font-medium text-fray-500 uppercase'>{config.label}</th> )
+    const renderedHeaders = config.map((val: any) => {
+        return ( <th key={val.label} className='p-4 text-left text-xs font-medium text-fray-500 uppercase'>{val.label}</th> )
     })
   return (
     <div className='bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8'>
