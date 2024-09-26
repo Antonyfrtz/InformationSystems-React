@@ -1,1 +1,2 @@
 C:\Users\anton\source\repos\InformationSystems\informationsystems.client\obj\Debug\informationsystems.client.esproj.CoreCompileInputs.cache
+C:\Users\antonis\source\repos\InformationSystems\informationsystems.client\obj\Debug\informationsystems.client.esproj.CoreCompileInputs.cache
