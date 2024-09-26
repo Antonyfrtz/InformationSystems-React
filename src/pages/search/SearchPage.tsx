@@ -5,6 +5,13 @@ import Search from '../../components/search/Search'
 import CardList from '../../components/cardlist/CardList'
 import { searchCompanies } from '../../api/API'
 import { CompanySearch } from '../../api/company'
+import { PortfolioGet } from "../../models/Portfolio";
+import {
+    portfolioAddAPI,
+    portfolioDeleteAPI,
+    portfolioGetAPI,
+} from "../../services/PortfolioService";
+import { toast } from "react-toastify";
 
 interface Props {}
 
@@ -13,7 +20,26 @@ const SearchPage = (props: Props) => {
     const [search, setSearch] = React.useState<string>('')
     const [searchResults, setSearchResults] = React.useState<CompanySearch[]>([])
     const [serverError, setServerError] = React.useState<string>('')
-    const [portfolioValues, setPortfolioValues] = React.useState<string[]>([])
+    const [portfolioValues, setPortfolioValues] = React.useState<PortfolioGet[] | null>(
+        []
+    );
+
+    React.useEffect(() => {
+        getPortfolio();
+    }, []);
+
+    const getPortfolio = () => {
+        portfolioGetAPI()
+            .then((res) => {
+                if (res?.data) {
+                    setPortfolioValues(res?.data);
+                }
+            })
+            .catch((e) => {
+                toast.warning("Failed to get portfolio");
+                setPortfolioValues(null);
+            });
+    };
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value)
@@ -33,27 +59,33 @@ const SearchPage = (props: Props) => {
 
     const onPortfolioCreate = (e: any) => {
         e.preventDefault()
-        // only add unique values
-        const exists = portfolioValues.find((portfolioValue) => portfolioValue === e.target[0].value)
-        if (exists) {
-            return
-        }
-        // add to portfolio
-        const updatedPortfolio = [...portfolioValues, e.target[0].value]
-        setPortfolioValues(updatedPortfolio)
+        portfolioAddAPI(e.target[0].value)
+            .then((res) => {
+                if (res?.status === 204 || res?.status === 200) {
+                    toast.success("Stock added to portfolio!");
+                    getPortfolio();
+                }
+            })
+            .catch((e) => {
+                toast.warning("Could not add stock to portfolio!");
+            });
     }
 
     const onPortfolioDelete = (e: any) => {
         e.preventDefault()
         // remove from portfolio
-        const updatedPortfolio = portfolioValues.filter((portfolioValue) => portfolioValue !== e.target[0].value)
-        setPortfolioValues(updatedPortfolio)
+        portfolioDeleteAPI(e.target[0].value).then((res) => {
+            if (res?.status == 204 || res?.status === 200) {
+                toast.success("Stock deleted from portfolio!");
+                getPortfolio(); // refresh portfolio
+            }
+        });
     }
 
     return (
         <div>
             {/*<Hero></Hero>*/}
-            <ListPortfolio portfolioValues={portfolioValues} onPortfolioDelete={onPortfolioDelete}></ListPortfolio>
+            <ListPortfolio portfolioValues={portfolioValues!} onPortfolioDelete={onPortfolioDelete}></ListPortfolio>
             <Search onSearchSubmit={onSearchSubmit} search={search} handleSearchChange={handleSearchChange}></Search>
             <CardList searchResults={searchResults} onPortfolioCreate={onPortfolioCreate}></CardList>
             {serverError && <div>{serverError}</div>}
