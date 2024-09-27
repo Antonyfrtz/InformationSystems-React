@@ -28,3 +28,12 @@ export const commentGetAPI = async (symbol: string) => {
         handleError(error);
     }
 };
+
+export const commentDeleteAPI = async (id: string) => {
+    try {
+        const response = await axios.delete<CommentGet[]>(api + `${id}`);
+        console.log('Comment deleted successfully:', response.data);
+    } catch (error) {
+        handleError(error);
+    }
+};

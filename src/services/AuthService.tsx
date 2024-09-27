@@ -10,6 +10,7 @@ export const loginAPI = async (username: string, password: string) => {
             userName: username,
             password: password
         });
+        console.log(data);
         return data;
     }
     catch (error) {
